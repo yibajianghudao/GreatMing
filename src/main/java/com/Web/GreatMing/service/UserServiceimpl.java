@@ -1,6 +1,6 @@
 package com.Web.GreatMing.service;
 
-
+import java.lang.NullPointerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,15 +46,17 @@ public class UserServiceimpl implements UserService {
     
     @Override
     public void deleteUserById(long id) {
-        userMapper.findById(id);
-        // userMapper.deleteById(id);
+        User user = userMapper.findById(id);
+        if(user == null) throw new NullPointerException();
+        userMapper.deleteById(id);
+        System.out.println("delete is be used.");
     }
 
     @Override
     @Transactional //操作失败后回滚
     public UserDTO updateUserById(long id, UserDTO userDTO) {
-        userMapper.findById(id);
         User user = userMapper.findById(id);
+        if(user == null) throw new NullPointerException();
         if (StringUtils.hasLength(userDTO.getName()) && !userDTO.getName().equals(user.getName())) {
             user.setName(userDTO.getName());
         }
@@ -83,9 +85,8 @@ public class UserServiceimpl implements UserService {
             user.setEnrollmentTime(userDTO.getEnrollmentTime());
         }
         // 更新后的UserDTO
-        // User addUser = userMapper.save(user);
-        User addUser = new User();
-        return UserConverter.converterUser(addUser);
+        userMapper.updateUser(user.getName(), user.getId());
+        return UserConverter.converterUser(userMapper.findById(id));
     }
 
 }

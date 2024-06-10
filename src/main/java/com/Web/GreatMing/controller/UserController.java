@@ -41,25 +41,36 @@ public class UserController {
         }
     }
     
-
     @GetMapping("/user/{id}")
-    public Response<UserDTO> getStudentById(@PathVariable long id){
+    public Response<?> getStudentById(@PathVariable long id){
+        try {
             return Response.newSuccess(userService.getUserById(id), "成功返回用户信息");
+        } catch (NullPointerException e) {
+            return Response.newFail("该Id用户不存在", e.toString());
+        }
+        
     }
-    // @PostMapping("/adduser")
-    // public Response<Long> addNewUser(@RequestBody UserDTO userDTO) {
-    //     return Response.newSuccess(userService.addNewUser(userDTO), "成功添加用户");
-    // }
+    
     @DeleteMapping("/deluser/{id}")
-    public Response<Void> delUserById(@PathVariable long id) {
-        userService.deleteUserById(id);
-        return Response.newSuccess(null);
+    public Response<?> delUserById(@PathVariable long id) {
+        try {
+            userService.deleteUserById(id);
+            return Response.newSuccess(null);
+        } catch (NullPointerException e) {
+            return Response.newFail("该id用户不存在", e.toString());
+        }
+        
     }
     @PutMapping("updateuser/{id}")
-    public Response<UserDTO> updateUserById(@PathVariable long id, @RequestBody UserDTO userDTO) {
+    public Response<?> updateUserById(@PathVariable long id, @RequestBody UserDTO userDTO) {
         // 此API不应传输passwd参数
-        UserDTO userUpdateDTO = userService.updateUserById(id, userDTO);
-        return Response.newSuccess(userUpdateDTO, "成功更新数据");
+        try {
+            UserDTO userUpdateDTO = userService.updateUserById(id, userDTO);
+            return Response.newSuccess(userUpdateDTO, "成功更新数据");
+        } catch (NullPointerException e) {
+            return Response.newFail("该id用户不存在", e.toString());
+        }
+
     }
     
     

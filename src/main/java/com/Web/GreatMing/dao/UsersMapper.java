@@ -1,8 +1,10 @@
 package com.Web.GreatMing.dao;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 
 @Mapper()
@@ -18,6 +20,12 @@ public interface UsersMapper{
     " values(#{name}, #{passwd}, #{tag}, #{ranks}, #{company}, #{kills}, #{attendance}, #{balance}, #{enrollmentTime}, now(), now())")
     void addNewUser(String name, String passwd, String tag, String ranks, String company, int kills, int attendance,
             int balance, String enrollmentTime);
+
+    @Delete("delete from Users where id=#{id}")
+    void deleteById(long id);
+
+    @Update("update Users set name=#{name} where id=#{id}")
+    void updateUser(String name, long id);
 
 
 
