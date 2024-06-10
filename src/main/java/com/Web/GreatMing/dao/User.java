@@ -1,63 +1,40 @@
 package com.Web.GreatMing.dao;
 
 
+import lombok.Data;
+import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-
-import static jakarta.persistence.GenerationType.IDENTITY;
-
-import java.sql.Timestamp;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 
 // 数据库表映射类
-@Entity
-@Table(name="Users")
-@Getter 
-@Setter
+@Data
 public class User {
-
-    @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = IDENTITY)    // 自增的ID
+    @NotNull
     private long id;
-
-    @Column(name="name")    // 如果变量名字和数据库字段名字相同则不用写此注解
+    @NotEmpty
     private String name;
-
-    @Column(name="passwd")
+    @JsonIgnore
     private String passwd;
 
-    @Column(name="tag")
     private String tag;
 
-    @Column(name="ranks")
     private String ranks;
     
-    @Column(name="company")
     private String company;
 
-    @Column(name="kills")
     private int kills;
 
-    @Column(name="attendance")
     private int attendance;
 
-    @Column(name="balance")
     private int balance;
 
-    @Column(name="enrollmentTime")
     private String enrollmentTime;
 
-    @Column(name="createtime")
-    private Timestamp createtime;
+    private LocalDateTime createtime;
 
-    @Column(name="updatetime")
-    private Timestamp updatetime;
+    private LocalDateTime updatetime;
 
 }
