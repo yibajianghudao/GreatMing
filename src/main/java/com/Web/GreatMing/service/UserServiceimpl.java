@@ -1,6 +1,9 @@
 package com.Web.GreatMing.service;
 
 import java.lang.NullPointerException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +13,11 @@ import com.Web.GreatMing.converter.UserConverter;
 import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dao.UsersMapper;
 import com.Web.GreatMing.dto.UserDTO;
+import com.Web.GreatMing.exception.PasswordWrongException;
+import com.Web.GreatMing.utils.JwtUtil;
 import com.Web.GreatMing.utils.Md5Util;
+
+import jakarta.validation.ConstraintViolationException;
 
 @Service
 public class UserServiceimpl implements UserService {
@@ -25,18 +32,22 @@ public class UserServiceimpl implements UserService {
     }
     @Override
     public void addNewUser(UserDTO userDTO) {
-        String name = userDTO.getName();
-        String Md5String = Md5Util.getMD5String(userDTO.getPasswd());
-        String tag = userDTO.getTag();
-        String ranks = userDTO.getRanks();
-        String company = userDTO.getCompany();
-        int kills = userDTO.getKills();
-        int attendance = userDTO.getAttendance();
-        int balance = userDTO.getBalance();
-        String enrollmentTime = userDTO.getEnrollmentTime();
-
-        userMapper.addNewUser(name, Md5String, tag, ranks, company, kills, attendance, balance, enrollmentTime);
-        return;
+        if(userDTO.getName().length() >= 1 &&userDTO.getName().length() <= 16 && userDTO.getPasswd().length() >= 6 && userDTO.getPasswd().length() <= 16){
+            String name = userDTO.getName();
+            String Md5String = Md5Util.getMD5String(userDTO.getPasswd());
+            String tag = userDTO.getTag();
+            String ranks = userDTO.getRanks();
+            String company = userDTO.getCompany();
+            int kills = userDTO.getKills();
+            int attendance = userDTO.getAttendance();
+            int balance = userDTO.getBalance();
+            String enrollmentTime = userDTO.getEnrollmentTime();
+            userMapper.addNewUser(name, Md5String, tag, ranks, company, kills, attendance, balance, enrollmentTime);
+            return;
+        }else {
+            throw new ConstraintViolationException("用户名需要在1-16位之间,密码需要在6-16位之间", null);
+        }
+        
     }
     @Override
     public UserDTO getUserById(long id) {
@@ -87,6 +98,26 @@ public class UserServiceimpl implements UserService {
         // 更新后的UserDTO
         userMapper.updateUser(user.getName(), user.getId());
         return UserConverter.converterUser(userMapper.findById(id));
+    }
+    public String login(UserDTO userLoginDTO) {
+        if(userLoginDTO.getName().length() >= 1 &&userLoginDTO.getName().length() <= 16 && userLoginDTO.getPasswd().length() >= 6 && userLoginDTO.getPasswd().length() <= 16){
+            User loginuser = userMapper.findByName(userLoginDTO.getName());
+            if (loginuser.getPasswd().equals(Md5Util.getMD5String(userLoginDTO.getPasswd()))){
+                // 登录成功
+                Map<String, Object> claims = new HashMap<>();
+                claims.put("id", loginuser.getId());
+                claims.put("name", loginuser.getName());
+                String token = JwtUtil.genToken(claims);
+
+                return token;
+            }else{
+                throw new PasswordWrongException("密码错误！");
+            }
+        }else {
+            throw new PasswordWrongException("用户名需要在1-16位之间,密码需要在6-16位之间");
+        }
+        
+
     }
 
 }
