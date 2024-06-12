@@ -3,10 +3,12 @@ package com.Web.GreatMing.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Web.GreatMing.Response;
+import com.Web.GreatMing.converter.UserConverter;
 import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dto.UserDTO;
 import com.Web.GreatMing.service.UserServiceimpl;
 import com.Web.GreatMing.utils.JwtUtil;
+import com.Web.GreatMing.utils.ThreadLocalUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PutMapping;
+
+
 
 
 
@@ -61,6 +65,21 @@ public class UserController {
         }
         
     }
+
+    @GetMapping("/user/userInfo")
+    public Response<?> userInfo(/* @RequestHeader(name = "Authorization") String token */) {
+        
+        // Map<String, Object> map = JwtUtil.parseToken(token);
+        
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String name = (String) map.get("name");
+        User infoUser = userService.findByName(name);
+        UserDTO infoUserDTO = UserConverter.converterUser(infoUser);
+
+        return Response.newSuccess(infoUserDTO, "查询用户信息成功.");
+    }
+    
+
     
     @DeleteMapping("/deluser/{id}")
     public Response<?> delUserById(@PathVariable long id) {

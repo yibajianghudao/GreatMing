@@ -99,20 +99,25 @@ public class UserServiceimpl implements UserService {
         userMapper.updateUser(user.getName(), user.getId());
         return UserConverter.converterUser(userMapper.findById(id));
     }
-    public String login(UserDTO userLoginDTO) {
-        if(userLoginDTO.getName().length() >= 1 &&userLoginDTO.getName().length() <= 16 && userLoginDTO.getPasswd().length() >= 6 && userLoginDTO.getPasswd().length() <= 16){
-            User loginuser = userMapper.findByName(userLoginDTO.getName());
-            if (loginuser.getPasswd().equals(Md5Util.getMD5String(userLoginDTO.getPasswd()))){
-                // 登录成功
-                Map<String, Object> claims = new HashMap<>();
-                claims.put("id", loginuser.getId());
-                claims.put("name", loginuser.getName());
-                String token = JwtUtil.genToken(claims);
-
-                return token;
-            }else{
-                throw new PasswordWrongException("密码错误！");
+    public String login(String name, String passwd) {
+        if(name.length() >= 1 &&name.length() <= 16 && passwd.length() >= 6 && passwd.length() <= 16){
+            User loginuser = userMapper.findByName(name);
+            try {
+                if (loginuser.getPasswd().equals(Md5Util.getMD5String(passwd))){
+                    // 登录成功
+                    Map<String, Object> claims = new HashMap<>();
+                    claims.put("id", loginuser.getId());
+                    claims.put("name", loginuser.getName());
+                    String token = JwtUtil.genToken(claims);
+    
+                    return token;
+                }else{
+                    throw new PasswordWrongException("密码错误！");
+                }
+            } catch (NullPointerException e) {
+                throw new PasswordWrongException("用户名不存在");
             }
+            
         }else {
             throw new PasswordWrongException("用户名需要在1-16位之间,密码需要在6-16位之间");
         }

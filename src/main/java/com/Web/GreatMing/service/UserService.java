@@ -10,5 +10,5 @@ public interface UserService {
     public void addNewUser(UserDTO userDTO);
     public void deleteUserById(long id);
     public UserDTO updateUserById(long id, UserDTO userDTO);
-    public String login(UserDTO userLoginDTO);
+    public String login(String name, String passwd);
 }

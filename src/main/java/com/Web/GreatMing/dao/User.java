@@ -16,8 +16,8 @@ public class User {
     private long id;
     @NotEmpty
     private String name;
-    @JsonIgnore
-    private String passwd;
+
+    private String passwd; // 可以使用驼峰命名，mybits会自动识别，但是保险起见还是使用原名
 
     private String tag;
 

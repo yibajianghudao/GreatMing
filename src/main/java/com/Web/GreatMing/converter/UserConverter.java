@@ -17,9 +17,12 @@ public class UserConverter {
         userDTO.setAttendance(user.getAttendance());
         userDTO.setBalance(user.getBalance());
         userDTO.setEnrollmentTime(user.getEnrollmentTime());
+        userDTO.setCreatetime(user.getCreatetime());
+        userDTO.setUpdatetime(user.getUpdatetime());
         return userDTO;
     }
     // 将接收到的前端的UserDTO类转换成User   
+    // 此处并未转换DTO到User的创建时间和更新时间
     public static User converterUserDTO(UserDTO userDTO){
         User user = new User();
         user.setId(userDTO.getId());
