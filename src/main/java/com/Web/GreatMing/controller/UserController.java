@@ -83,10 +83,7 @@ public class UserController {
         }
 
     }
-    @PostMapping("/login")
-    public Response<?> login(@RequestBody UserDTO userLoginDTO) {
-        return Response.newSuccess(userService.login(userLoginDTO), "登录成功！");
-    }
+    
     
     
     
