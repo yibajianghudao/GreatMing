@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.Web.GreatMing.converter.UserConverter;
 import com.Web.GreatMing.dao.User;
@@ -65,38 +64,11 @@ public class UserServiceimpl implements UserService {
 
     @Override
     @Transactional //操作失败后回滚
-    public UserDTO updateUserById(long id, UserDTO userDTO) {
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
         User user = userMapper.findById(id);
-        if(user == null) throw new NullPointerException();
-        if (StringUtils.hasLength(userDTO.getName()) && !userDTO.getName().equals(user.getName())) {
-            user.setName(userDTO.getName());
-        }
-        // if (StringUtils.hasLength(userDTO.getPasswd()) && !userDTO.getPasswd().equals(user.getPasswd())) {
-        //     user.setPasswd(userDTO.getPasswd());
-        // }
-        if (StringUtils.hasLength(userDTO.getTag()) && !userDTO.getTag().equals(user.getTag())) {
-            user.setTag(userDTO.getTag());
-        }
-        if (StringUtils.hasLength(userDTO.getRanks()) && !userDTO.getRanks().equals(user.getRanks())) {
-            user.setRanks(userDTO.getRanks());
-        }
-        if (StringUtils.hasLength(userDTO.getCompany()) && !userDTO.getCompany().equals(user.getCompany())) {
-            user.setCompany(userDTO.getCompany());
-        }
-        if (userDTO.getKills() != 0 && (userDTO.getKills() != user.getKills())) {
-            user.setKills(userDTO.getKills());
-        }
-        if (userDTO.getAttendance() != 0 && (userDTO.getAttendance() != user.getAttendance())) {
-            user.setAttendance(userDTO.getAttendance());
-        }
-        if (userDTO.getBalance() != 0 && (userDTO.getBalance() != user.getBalance())) {
-            user.setBalance(userDTO.getBalance());
-        }
-        if (StringUtils.hasLength(userDTO.getEnrollmentTime()) && !userDTO.getEnrollmentTime().equals(user.getEnrollmentTime())) {
-            user.setEnrollmentTime(userDTO.getEnrollmentTime());
-        }
-        // 更新后的UserDTO
-        userMapper.updateUser(user.getName(), user.getId());
+        userDTO.setId(user.getId());
+        userDTO.setPasswd(user.getPasswd());
+        userMapper.updateUser(userDTO);
         return UserConverter.converterUser(userMapper.findById(id));
     }
     public String login(String name, String passwd) {

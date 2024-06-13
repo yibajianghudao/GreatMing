@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.Web.GreatMing.dto.UserDTO;
+
 
 @Mapper()
 public interface UsersMapper{
@@ -24,8 +26,8 @@ public interface UsersMapper{
     @Delete("delete from Users where id=#{id}")
     void deleteById(long id);
 
-    @Update("update Users set name=#{name} where id=#{id}")
-    void updateUser(String name, long id);
+    @Update("update Users set name=#{name},passwd=#{passwd},tag=#{tag},ranks=#{ranks},company=#{company},kills=#{kills},attendance=#{attendance},balance=#{balance},enrollmentTime=#{enrollmentTime},updatetime=NOW() where id=#{id}")
+    void updateUser(UserDTO userDTO);
 
 
 

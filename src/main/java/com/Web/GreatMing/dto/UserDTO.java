@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ public class UserDTO {
     // 此处为了新建用户时设置密码，似乎也要在这里添加一个password属性。
     private long id;
 
+    @NotEmpty
     private String name;
 
     //转换为Json的时候忽略此属性，仅仅使用userDTO的话，返回的json依旧存在此属性，但是值为null

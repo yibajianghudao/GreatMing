@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +35,7 @@ public class UserController {
     @Autowired
     private UserServiceimpl userService;
 
-    @PostMapping("/adduser")
+    @PostMapping("/user/adduser")
     public Response<?> addNewUser(@RequestBody UserDTO userDTO) {
         User user = userService.findByName(userDTO.getName());
         if (user != null){
@@ -81,7 +82,7 @@ public class UserController {
     
 
     
-    @DeleteMapping("/deluser/{id}")
+    @DeleteMapping("/user/deluser/{id}")
     public Response<?> delUserById(@PathVariable long id) {
         try {
             userService.deleteUserById(id);
@@ -91,16 +92,14 @@ public class UserController {
         }
         
     }
-    @PutMapping("updateuser/{id}")
-    public Response<?> updateUserById(@PathVariable long id, @RequestBody UserDTO userDTO) {
+    @PutMapping("/user/update")
+    public Response<?> updateUser(@RequestBody @Validated UserDTO userDTO) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer idiInteger =  (Integer) map.get("id");
+        Long id = idiInteger.longValue();
         // 此API不应传输passwd参数
-        try {
-            UserDTO userUpdateDTO = userService.updateUserById(id, userDTO);
-            return Response.newSuccess(userUpdateDTO, "成功更新数据");
-        } catch (NullPointerException e) {
-            return Response.newFail("该id用户不存在", e.toString());
-        }
-
+        UserDTO newUserDTO = userService.updateUser(id, userDTO);
+        return Response.newSuccess(newUserDTO, "用户信息更新成功！");
     }
     
     

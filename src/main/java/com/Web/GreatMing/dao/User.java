@@ -14,9 +14,11 @@ import jakarta.validation.constraints.NotNull;
 public class User {
     @NotNull
     private long id;
+
     @NotEmpty
     private String name;
 
+    @NotEmpty
     private String passwd; // 可以使用驼峰命名，mybits会自动识别，但是保险起见还是使用原名
 
     private String tag;
