@@ -19,7 +19,7 @@ public class UserDTO {
     private String name;
 
     //转换为Json的时候忽略此属性，仅仅使用userDTO的话，返回的json依旧存在此属性，但是值为null
-    @JsonIgnore 
+    // @JsonIgnore 
     private String passwd;
 
     private String tag;
@@ -34,7 +34,7 @@ public class UserDTO {
 
     private int balance;
 
-    private String enrollmentTime;
+    private String userpic;
 
     private LocalDateTime createtime;
 

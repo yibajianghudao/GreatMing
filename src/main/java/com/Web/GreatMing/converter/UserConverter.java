@@ -16,7 +16,7 @@ public class UserConverter {
         userDTO.setKills(user.getKills());
         userDTO.setAttendance(user.getAttendance());
         userDTO.setBalance(user.getBalance());
-        userDTO.setEnrollmentTime(user.getEnrollmentTime());
+        userDTO.setUserpic(user.getUserpic());
         userDTO.setCreatetime(user.getCreatetime());
         userDTO.setUpdatetime(user.getUpdatetime());
         return userDTO;
@@ -34,7 +34,7 @@ public class UserConverter {
         user.setKills(userDTO.getKills());
         user.setAttendance(userDTO.getAttendance());
         user.setBalance(userDTO.getBalance());
-        user.setEnrollmentTime(userDTO.getEnrollmentTime());
+        user.setUserpic(userDTO.getUserpic());
         return user;
     }
 }

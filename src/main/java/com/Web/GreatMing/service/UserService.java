@@ -11,4 +11,6 @@ public interface UserService {
     public void deleteUserById(long id);
     public UserDTO updateUser(Long id, UserDTO userDTO);
     public String login(String name, String passwd);
+    public void updateAvatar(String avatatUrl);
+    public void updatePasswd(String newPasswd);
 }

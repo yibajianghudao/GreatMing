@@ -15,6 +15,7 @@ import com.Web.GreatMing.dto.UserDTO;
 import com.Web.GreatMing.exception.PasswordWrongException;
 import com.Web.GreatMing.utils.JwtUtil;
 import com.Web.GreatMing.utils.Md5Util;
+import com.Web.GreatMing.utils.ThreadLocalUtil;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -32,16 +33,9 @@ public class UserServiceimpl implements UserService {
     @Override
     public void addNewUser(UserDTO userDTO) {
         if(userDTO.getName().length() >= 1 &&userDTO.getName().length() <= 16 && userDTO.getPasswd().length() >= 6 && userDTO.getPasswd().length() <= 16){
-            String name = userDTO.getName();
-            String Md5String = Md5Util.getMD5String(userDTO.getPasswd());
-            String tag = userDTO.getTag();
-            String ranks = userDTO.getRanks();
-            String company = userDTO.getCompany();
-            int kills = userDTO.getKills();
-            int attendance = userDTO.getAttendance();
-            int balance = userDTO.getBalance();
-            String enrollmentTime = userDTO.getEnrollmentTime();
-            userMapper.addNewUser(name, Md5String, tag, ranks, company, kills, attendance, balance, enrollmentTime);
+            User user = UserConverter.converterUserDTO(userDTO);
+            user.setPasswd(Md5Util.getMD5String(userDTO.getPasswd()));
+            userMapper.addNewUser(user);
             return;
         }else {
             throw new ConstraintViolationException("用户名需要在1-16位之间,密码需要在6-16位之间", null);
@@ -66,9 +60,12 @@ public class UserServiceimpl implements UserService {
     @Transactional //操作失败后回滚
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User user = userMapper.findById(id);
+        // 将前端未传入的参数从user中取出并设置
         userDTO.setId(user.getId());
         userDTO.setPasswd(user.getPasswd());
-        userMapper.updateUser(userDTO);
+        userDTO.setUserpic(user.getUserpic());
+        User updatedUser = UserConverter.converterUserDTO(userDTO);
+        userMapper.updateUser(updatedUser);
         return UserConverter.converterUser(userMapper.findById(id));
     }
     public String login(String name, String passwd) {
@@ -95,6 +92,18 @@ public class UserServiceimpl implements UserService {
         }
         
 
+    }
+    public void updateAvatar(String avatatUrl) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer idiInteger =  (Integer) map.get("id");
+        Long id = idiInteger.longValue();
+        userMapper.updateAvatar(id, avatatUrl);
+    }
+    public void updatePasswd(String newPasswd) {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer idiInteger =  (Integer) map.get("id");
+        Long id = idiInteger.longValue();
+        userMapper.updatePasswd(id, Md5Util.getMD5String(newPasswd));
     }
 
 }

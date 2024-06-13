@@ -8,20 +8,26 @@ import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dto.UserDTO;
 import com.Web.GreatMing.service.UserServiceimpl;
 import com.Web.GreatMing.utils.JwtUtil;
+import com.Web.GreatMing.utils.Md5Util;
 import com.Web.GreatMing.utils.ThreadLocalUtil;
+
 
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Map;
 
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -94,12 +100,58 @@ public class UserController {
     }
     @PutMapping("/user/update")
     public Response<?> updateUser(@RequestBody @Validated UserDTO userDTO) {
+        // 前端需要传递显示全部的属性，未更新也要传递
+        // 密码,头像等需要走单独的接口进行修改
         Map<String, Object> map = ThreadLocalUtil.get();
         Integer idiInteger =  (Integer) map.get("id");
         Long id = idiInteger.longValue();
         // 此API不应传输passwd参数
         UserDTO newUserDTO = userService.updateUser(id, userDTO);
         return Response.newSuccess(newUserDTO, "用户信息更新成功！");
+    }
+
+    @PatchMapping("/user/updateAvatar")
+    public Response<?> updateAvatar(@RequestParam @URL String avatatUrl){
+        userService.updateAvatar(avatatUrl);
+
+        return Response.newSuccess("成功更新用户头像.");
+
+    }
+
+    @PatchMapping("/user/updatepasswd")
+    public Response<?> updatePasswd(@RequestBody Map<String, String> params){
+        // 校验参数
+        String oldPasswd = params.get("old_passwd");
+        String newPasswd = params.get("new_passwd");
+        String rePasswd = params.get("re_passwd");
+
+        if(!StringUtils.hasLength(oldPasswd) || !StringUtils.hasLength(newPasswd) || !StringUtils.hasLength(rePasswd)){
+            return Response.newFail("缺少必要的参数");
+        }
+
+        // 原密码是否正确
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String name = (String) map.get("name");
+        User loginUser = userService.findByName(name);
+        if (!loginUser.getPasswd().equals(Md5Util.getMD5String(oldPasswd))){
+            return Response.newFail("原密码填写不正确");
+        }
+
+        if (!rePasswd.equals(newPasswd)){
+            return Response.newFail("两次填写的新密码不同");
+        }
+
+        if (!(newPasswd.length() >= 6 && newPasswd.length() <= 16) ) {
+            return Response.newFail("密码需要在6-16位之间");
+        }
+        if (oldPasswd.equals(newPasswd)) {
+            return Response.newFail("新密码不能与旧密码相同");
+        }
+
+        userService.updatePasswd(newPasswd);
+        return Response.newSuccess("密码更新成功");
+
+
     }
     
     

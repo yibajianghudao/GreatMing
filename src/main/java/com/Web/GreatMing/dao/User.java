@@ -33,7 +33,7 @@ public class User {
 
     private int balance;
 
-    private String enrollmentTime;
+    private String userpic;
 
     private LocalDateTime createtime;
 
