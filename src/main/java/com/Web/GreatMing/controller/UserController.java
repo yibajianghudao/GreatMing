@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -36,12 +37,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserServiceimpl userService;
 
-    @PostMapping("/user/adduser")
+    @PostMapping("/adduser")
     public Response<?> addNewUser(@RequestBody UserDTO userDTO) {
         User user = userService.findByName(userDTO.getName());
         if (user != null){
@@ -55,7 +57,7 @@ public class UserController {
         }
     }
     
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public Response<?> getStudentById(@PathVariable long id, @RequestHeader(name = "Authorization") String token, HttpServletResponse response){
         try {
             Map<String, Object> claims = JwtUtil.parseToken(token);
@@ -73,7 +75,7 @@ public class UserController {
         
     }
 
-    @GetMapping("/user/userInfo")
+    @GetMapping("/userInfo")
     public Response<?> userInfo(/* @RequestHeader(name = "Authorization") String token */) {
         
         // Map<String, Object> map = JwtUtil.parseToken(token);
@@ -88,7 +90,7 @@ public class UserController {
     
 
     
-    @DeleteMapping("/user/deluser/{id}")
+    @DeleteMapping("/deluser/{id}")
     public Response<?> delUserById(@PathVariable long id) {
         try {
             userService.deleteUserById(id);
@@ -98,7 +100,7 @@ public class UserController {
         }
         
     }
-    @PutMapping("/user/update")
+    @PutMapping("/update")
     public Response<?> updateUser(@RequestBody @Validated UserDTO userDTO) {
         // 前端需要传递显示全部的属性，未更新也要传递
         // 密码,头像等需要走单独的接口进行修改
@@ -110,7 +112,7 @@ public class UserController {
         return Response.newSuccess(newUserDTO, "用户信息更新成功！");
     }
 
-    @PatchMapping("/user/updateAvatar")
+    @PatchMapping("/updateAvatar")
     public Response<?> updateAvatar(@RequestParam @URL String avatatUrl){
         userService.updateAvatar(avatatUrl);
 
@@ -118,7 +120,7 @@ public class UserController {
 
     }
 
-    @PatchMapping("/user/updatepasswd")
+    @PatchMapping("/updatepasswd")
     public Response<?> updatePasswd(@RequestBody Map<String, String> params){
         // 校验参数
         String oldPasswd = params.get("old_passwd");
