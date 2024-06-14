@@ -1,5 +1,7 @@
 package com.Web.GreatMing.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,6 +34,9 @@ public interface UsersMapper{
 
     @Update("update Users set passwd=#{passwd},updatetime=NOW() where id=#{id}")
     void updatePasswd(Long id, String passwd);
+
+    @Select("select * from Users")
+    List<User> getUserList();
 
 
 

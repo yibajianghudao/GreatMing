@@ -14,6 +14,7 @@ import com.Web.GreatMing.utils.ThreadLocalUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.validator.constraints.URL;
@@ -155,6 +156,14 @@ public class UserController {
 
 
     }
+
+
+    @GetMapping("/userlist")
+    public Response<List<User>> getUserList() {
+        List<User> list = userService.getUserList();
+        return Response.newSuccess(list, "成功返回用户列表");
+    }
+    
     
     
     

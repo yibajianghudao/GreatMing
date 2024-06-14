@@ -1,6 +1,8 @@
 package com.Web.GreatMing.service;
 
 
+import java.util.List;
+
 import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dto.UserDTO;
 
@@ -13,4 +15,5 @@ public interface UserService {
     public String login(String name, String passwd);
     public void updateAvatar(String avatatUrl);
     public void updatePasswd(String newPasswd);
+    public List<User> getUserList();
 }

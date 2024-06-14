@@ -2,6 +2,7 @@ package com.Web.GreatMing.service;
 
 import java.lang.NullPointerException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ public class UserServiceimpl implements UserService {
         userMapper.updateUser(updatedUser);
         return UserConverter.converterUser(userMapper.findById(id));
     }
+    
     public String login(String name, String passwd) {
         if(name.length() >= 1 &&name.length() <= 16 && passwd.length() >= 6 && passwd.length() <= 16){
             User loginuser = userMapper.findByName(name);
@@ -104,6 +106,10 @@ public class UserServiceimpl implements UserService {
         Integer idiInteger =  (Integer) map.get("id");
         Long id = idiInteger.longValue();
         userMapper.updatePasswd(id, Md5Util.getMD5String(newPasswd));
+    }
+    public List<User> getUserList() {
+        List<User> list =  userMapper.getUserList();
+        return list;
     }
 
 }
