@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.Web.GreatMing.converter.UserConverter;
+import com.Web.GreatMing.dao.PageBean;
 import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dao.UsersMapper;
 import com.Web.GreatMing.dto.UserDTO;
@@ -17,6 +18,8 @@ import com.Web.GreatMing.exception.PasswordWrongException;
 import com.Web.GreatMing.utils.JwtUtil;
 import com.Web.GreatMing.utils.Md5Util;
 import com.Web.GreatMing.utils.ThreadLocalUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -110,6 +113,26 @@ public class UserServiceimpl implements UserService {
     public List<User> getUserList() {
         List<User> list =  userMapper.getUserList();
         return list;
+    }
+    public PageBean<User> userPageList(Integer pageNum, Integer pageSize, String company) {
+        // 创建PageBean对象
+        PageBean<User> pb = new PageBean<>();
+
+        // 开启分页查询(mybits插件)
+        PageHelper.startPage(pageNum, pageSize);
+
+        // 调用Mapper执行sql
+        List<User> as= userMapper.userPageList(company);
+        
+        // 强制转换类型，因为Page中提供了方法获取PageHelper分页查询后得到的消息记录条数和当前页数据
+        // 因为多态不允许父类(List<user>)调用子类Page<User>中特有的方法
+        Page<User> p = (Page<User>) as;
+
+        // 数据填充到PageBean对象中
+        pb.setTotal(p.getTotal());
+        pb.setItems(p.getResult());
+
+        return pb;
     }
 
 }

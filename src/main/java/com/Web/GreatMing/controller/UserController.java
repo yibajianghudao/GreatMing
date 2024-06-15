@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.converter.UserConverter;
+import com.Web.GreatMing.dao.PageBean;
 import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dto.UserDTO;
 import com.Web.GreatMing.service.UserServiceimpl;
@@ -162,6 +163,16 @@ public class UserController {
     public Response<List<User>> getUserList() {
         List<User> list = userService.getUserList();
         return Response.newSuccess(list, "成功返回用户列表");
+    }
+
+    @GetMapping("/userpagelist")
+    public Response<PageBean<User>> userPageList(
+        Integer pageNum,
+        Integer pageSize,
+        @RequestParam(required = false) String company
+    ){
+        PageBean<User> pb = userService.userPageList(pageNum, pageSize, company);
+        return Response.newSuccess(pb, "返回数据列表成功.");
     }
     
     

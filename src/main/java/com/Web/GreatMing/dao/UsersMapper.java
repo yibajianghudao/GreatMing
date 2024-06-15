@@ -38,6 +38,8 @@ public interface UsersMapper{
     @Select("select * from Users")
     List<User> getUserList();
 
+    List<User> userPageList(String company);
+
 
 
 }
