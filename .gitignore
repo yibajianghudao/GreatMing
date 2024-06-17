@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# image暂时存放路径
+files/
