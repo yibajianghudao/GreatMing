@@ -131,7 +131,8 @@ public class UserServiceimpl implements UserService {
         // 数据填充到PageBean对象中
         pb.setTotal(p.getTotal());
         pb.setItems(p.getResult());
-
+        
+        p.close();
         return pb;
     }
 
