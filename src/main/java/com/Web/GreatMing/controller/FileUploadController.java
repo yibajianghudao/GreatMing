@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.service.FileUploadServiceimpl;
-
+import com.Web.GreatMing.service.UserServiceimpl;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,6 +27,9 @@ public class FileUploadController {
     @Autowired
     FileUploadServiceimpl fileUploadService;
 
+    @Autowired
+    UserServiceimpl userService;
+
     @PostMapping("/upload")
     public Response<?> upload(MultipartFile file){
         String originalFilename = file.getOriginalFilename();
@@ -38,7 +41,7 @@ public class FileUploadController {
         // file.transferTo(new File("/home/HanXiao/Code/Java/GreatMing/files/" + filename));
         try {
             String result = fileUploadService.fileUpload(filename, file);
-            // String result = 
+            userService.updateAvatar(result);
             return Response.newSuccess(result, "返回访问地址成功！");
         } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
             return Response.newFail(e.getMessage());
