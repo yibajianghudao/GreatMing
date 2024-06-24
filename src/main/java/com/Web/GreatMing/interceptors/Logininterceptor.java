@@ -2,6 +2,9 @@ package com.Web.GreatMing.interceptors;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,14 +18,36 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class Logininterceptor implements HandlerInterceptor {
     
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
     // 请求接口前执行
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         // 令牌验证
         String token = request.getHeader("Authorization");
+        Map<String, Object> map = JwtUtil.parseToken(token);
+        Integer idiInteger =  (Integer) map.get("id");
+        Long id = idiInteger.longValue();
+        String keyString = id.toString();
         try {
+            // 从redis中获取相同的Token
+            ValueOperations operations = stringRedisTemplate.opsForValue();
+            String redisToken = (String) operations.get(keyString);
+            // System.out.println(keyString);
+            // System.out.println(redisToken);
+            if (redisToken == null) {
+                // token已失效
+                // System.out.println("token不存在");
+                throw new RuntimeException();
+            }else if (!redisToken.equals(token)){
+                // token不正确
+                // System.out.println("token不正确");
+                throw new RuntimeException();
+            }
+
             Map<String, Object> claims = JwtUtil.parseToken(token);
-            // 把数据存储到ThreadLocal
+            // 把数据存储到ThreadLocal,记录当前用户的token
             ThreadLocalUtil.set(claims);
 
             return true;

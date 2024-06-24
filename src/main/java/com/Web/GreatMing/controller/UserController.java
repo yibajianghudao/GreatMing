@@ -20,6 +20,8 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +46,9 @@ public class UserController {
 
     @Autowired
     private UserServiceimpl userService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @PostMapping("/adduser")
     public Response<?> addNewUser(@RequestBody UserDTO userDTO) {
@@ -123,7 +128,7 @@ public class UserController {
     }
 
     @PatchMapping("/updatepasswd")
-    public Response<?> updatePasswd(@RequestBody Map<String, String> params){
+    public Response<?> updatePasswd(@RequestBody Map<String, String> params, @RequestHeader("Authorization") String token){
         // 校验参数
         String oldPasswd = params.get("old_passwd");
         String newPasswd = params.get("new_passwd");
@@ -136,6 +141,8 @@ public class UserController {
         // 原密码是否正确
         Map<String, Object> map = ThreadLocalUtil.get();
         String name = (String) map.get("name");
+        Integer idiInteger =  (Integer) map.get("id");
+        Long id = idiInteger.longValue();
         User loginUser = userService.findByName(name);
         if (!loginUser.getPasswd().equals(Md5Util.getMD5String(oldPasswd))){
             return Response.newFail("原密码填写不正确");
@@ -153,6 +160,10 @@ public class UserController {
         }
 
         userService.updatePasswd(newPasswd);
+
+        String keyString = id.toString();
+        // ValueOperations operations = stringRedisTemplate.opsForValue();
+        stringRedisTemplate.delete(keyString);
         return Response.newSuccess("密码更新成功");
 
 

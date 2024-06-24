@@ -4,8 +4,11 @@ import java.lang.NullPointerException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,9 @@ public class UserServiceimpl implements UserService {
     
     @Autowired
     private UsersMapper userMapper;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
     
     @Override
     public User findByName(String username){
@@ -79,11 +85,16 @@ public class UserServiceimpl implements UserService {
             try {
                 if (loginuser.getPasswd().equals(Md5Util.getMD5String(passwd))){
                     // 登录成功
+                    Long id = loginuser.getId();
                     Map<String, Object> claims = new HashMap<>();
-                    claims.put("id", loginuser.getId());
+                    claims.put("id", id);
                     claims.put("name", loginuser.getName());
                     String token = JwtUtil.genToken(claims);
-    
+
+                    // 把token存储到redis中(id:token)
+                    String keyString = id.toString();
+                    ValueOperations operations = stringRedisTemplate.opsForValue();
+                    operations.set(keyString, token, 1, TimeUnit.HOURS);
                     return token;
                 }else{
                     throw new PasswordWrongException("密码错误！");
