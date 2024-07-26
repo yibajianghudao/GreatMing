@@ -26,6 +26,7 @@ public class Logininterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         // 令牌验证
         String token = request.getHeader("Authorization");
+//        System.out.println(token);
         Map<String, Object> map = JwtUtil.parseToken(token);
         Integer idiInteger =  (Integer) map.get("id");
         Long id = idiInteger.longValue();
@@ -38,7 +39,7 @@ public class Logininterceptor implements HandlerInterceptor {
             // System.out.println(redisToken);
             if (redisToken == null) {
                 // token已失效
-                // System.out.println("token不存在");
+//                 System.out.println(token);
                 throw new RuntimeException();
             }else if (!redisToken.equals(token)){
                 // token不正确

@@ -1,6 +1,6 @@
 package com.Web.GreatMing.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.converter.UserConverter;
@@ -24,22 +24,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PutMapping;
-
-
-
-
-
-
+//@CrossOrigin(maxAge = 3600, methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS })
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -127,6 +112,8 @@ public class UserController {
 
     }
 
+    // 获取token的入参似乎可以删除了
+//    @CrossOrigin
     @PatchMapping("/updatepasswd")
     public Response<?> updatePasswd(@RequestBody Map<String, String> params, @RequestHeader("Authorization") String token){
         // 校验参数

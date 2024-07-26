@@ -2,6 +2,7 @@ package com.Web.GreatMing.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -19,5 +20,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(logininterceptor).excludePathPatterns("/login", "/user/adduser");
 
     }
-
 }
