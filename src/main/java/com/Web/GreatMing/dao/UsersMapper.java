@@ -40,6 +40,9 @@ public interface UsersMapper{
 
     List<User> userPageList(String company);
 
+    @Update("update Users set balance=#{balance} where id=#{id}")
+    void updateBalance(long id, double balance);
+
 
 
 }

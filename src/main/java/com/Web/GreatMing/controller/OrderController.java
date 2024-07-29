@@ -2,13 +2,16 @@ package com.Web.GreatMing.controller;
 
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.dao.Order;
+import com.Web.GreatMing.exception.MessageException;
 import com.Web.GreatMing.service.OrderService;
+import com.Web.GreatMing.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/order")
@@ -23,12 +26,14 @@ public class OrderController {
         return Response.newSuccess(list, "find all orders success");
     }
 
+    // 测试使用
     @PostMapping("/addorder")
     public Response<?> addOrder(@RequestBody @Validated Order order) {
         Order order1 = orderService.addOrder(order);
         return Response.newSuccess(order1, "add order success");
     }
 
+    // 测试使用
     @DeleteMapping("/delorder/{id}")
     public Response<?> delOrder(@PathVariable long id) {
         orderService.delOrder(id);
@@ -38,6 +43,33 @@ public class OrderController {
         else {
             return Response.newFail("del order fail");
         }
+    }
+
+    @PostMapping("/buy")
+    public Response<?> buyOrder(@RequestBody Map<String, Integer> params) {
+        try {
+            int productId = params.get("productId");
+            int quantity = params.get("quantity");
+            Map<String, Object> map = ThreadLocalUtil.get();
+            String name = (String) map.get("name");
+            // 传入参数:productId,quantity
+            Order order = orderService.buyOrder(name, productId, quantity);   // 通过添加前与添加后的该用户订单数量是否变化来判断是否成功
+            return Response.newSuccess(order, "buy order success");
+        } catch (MessageException e){
+            return Response.newFail(e.getMessage());
+        }
+
+    }
+
+    @DeleteMapping("/refund/{id}")
+    public Response<?> refundOrder(@PathVariable long id) {
+        try {
+            double newBalance = orderService.refundOrder(id);
+            return Response.newSuccess(newBalance, "refund order success");
+        } catch (MessageException e){
+            return Response.newFail(e.getMessage());
+        }
+
     }
 
 }

@@ -33,7 +33,7 @@ public class UserDTO {
 
     private int attendance;
 
-    private int balance;
+    private double balance;
 
     private String userpic;
 

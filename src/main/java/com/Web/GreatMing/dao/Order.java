@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class Order {
 
@@ -16,16 +18,18 @@ public class Order {
     @NotEmpty
     private String productName;
 
-    @NotEmpty
+//    @NotEmpty // 购买的时候通过token读出name即可
     private String username;
 
     @NotNull
-    private Double price;
+    private double price;
 
     @NotNull
     private int quantity;
 
-    private Double sum;
+    private double sum;
+
+    private LocalDateTime createTime;
 
 
 }

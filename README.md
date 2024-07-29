@@ -5,7 +5,7 @@ script:
 
 #### Users:
 ```
-CREATE TABLE Users(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60) NOT NULL, passwd VARCHAR(60) NOT NULL, tag VARCHAR(60) DEFAULT "members", ranks VARCHAR(10), company VARCHAR(10), kills INT DEFAULT 0, attendance INT DEFAULT 0, balance DOUBLE DEFAULT 0, userpic VARCHAR(100), createtime datetime not null, updatetime datetime not null);
+CREATE TABLE Users(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60) NOT NULL, passwd VARCHAR(60) NOT NULL, tag VARCHAR(60) DEFAULT "members", ranks VARCHAR(10), company VARCHAR(10), kills INT DEFAULT 0, attendance INT DEFAULT 0, balance DECIMAL(10, 2) DEFAULT 0.00, userpic VARCHAR(100), createtime datetime not null, updatetime datetime not null);
 ```
 插入数据:
 ```
@@ -42,7 +42,8 @@ CREATE TABLE orders (
     username VARCHAR(60) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     quantity INT NOT NULL,
-    sum DECIMAL(10, 2) NOT NULL
+    sum DECIMAL(10, 2) NOT NULL,
+    createTime datetime NOT NULL
 )
 
 ```
@@ -56,4 +57,7 @@ and run:
 
 ## 开发计划：
 1. ~~完成订单类和接口~~
-2. 完成用户购买和退款接口
+2. ~~完成用户购买和退款接口~~
+3. 军饷记录与溯源
+4. 排行榜系统
+5. 后台管理系统

@@ -147,4 +147,23 @@ public class UserServiceimpl implements UserService {
         return pb;
     }
 
+    public boolean reduceBalance(long id, double num){
+        double balance = userMapper.findById(id).getBalance();
+        if(balance < num){
+            return false;
+        }else {
+            double newBalance = balance - num;
+            userMapper.updateBalance(id, newBalance);
+            return true;
+        }
+    }
+
+    public boolean addBalance(long id, double num){
+        double balance = userMapper.findById(id).getBalance();
+        double newBalance = balance + num;
+        userMapper.updateBalance(id, newBalance);
+        double findBalance = userMapper.findById(id).getBalance();
+        return findBalance == newBalance;
+    }
+
 }

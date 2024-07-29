@@ -31,7 +31,7 @@ public class User {
 
     private int attendance;
 
-    private int balance;
+    private double balance;
 
     private String userpic;
 
