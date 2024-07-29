@@ -32,6 +32,20 @@ CREATE TABLE products (
       image_url VARCHAR(255)
 );
 ```
+
+#### orders
+```mysql
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    productId INT NOT NULL,
+    productName VARCHAR(60) NOT NULL,
+    username VARCHAR(60) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    sum DECIMAL(10, 2) NOT NULL
+)
+
+```
 ### 安装redis
 for windows,you can see: [this doc](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-windows/).  
 and run:  
@@ -39,3 +53,7 @@ and run:
 ## TODO
 ~~将User类和Select类分开，路径使用/user，/select区分。~~  
 ~~将登录和注册接口的路径添加到拦截器的关闭名单中。~~
+
+## 开发计划：
+1. ~~完成订单类和接口~~
+2. 完成用户购买和退款接口
