@@ -63,7 +63,7 @@ public class UserServiceimpl implements UserService {
         User user = userMapper.findById(id);
         if(user == null) throw new NullPointerException();
         userMapper.deleteById(id);
-        System.out.println("delete is be used.");
+//        System.out.println("delete is be used.");
     }
 
     @Override
