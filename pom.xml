@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.web</groupId>
 	<artifactId>GreatMing</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>GreatMingWeb</name>
 	<description>GreatMing Web for Spring Boot</description>
 	<properties>
@@ -94,6 +94,11 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.2.7</version>
+				<groupId>org.springframework.boot</groupId>
 			</plugin>
 		</plugins>
 	</build>

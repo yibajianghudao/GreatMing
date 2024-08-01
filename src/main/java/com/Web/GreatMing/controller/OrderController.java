@@ -53,6 +53,7 @@ public class OrderController {
             Map<String, Object> map = ThreadLocalUtil.get();
             String name = (String) map.get("name");
             // 传入参数:productId,quantity
+            // 没有检测剩余商品数量
             Order order = orderService.buyOrder(name, productId, quantity);   // 通过添加前与添加后的该用户订单数量是否变化来判断是否成功
             return Response.newSuccess(order, "buy order success");
         } catch (MessageException e){

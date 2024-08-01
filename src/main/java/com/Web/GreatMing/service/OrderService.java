@@ -18,6 +18,8 @@ public class OrderService {
     private UserServiceimpl userServiceimpl;
     @Autowired
     private UsersMapper usersMapper;
+    @Autowired
+    private ProductsService productsService;
 
     public List<Order> getAllOrder() {
         return orderMapper.findAllOrder();
@@ -56,7 +58,8 @@ public class OrderService {
             order1.setPrice(products.getPrice());
             order1.setQuantity(quantity);
             order1.setSum(sum);
-            int id = orderMapper.addOrder(order1);
+            orderMapper.addOrder(order1);
+            productsService.updateProductsQuantity(productId, (quantity * -1));
             return orderMapper.findLastByUsername(username);
         } else {
             throw new MessageException("balance isn't enough");
