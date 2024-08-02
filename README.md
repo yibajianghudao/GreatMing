@@ -2,6 +2,9 @@
 ## 配置:
 ### 安装mariadb
 script:
+CREATE DATABASE GreatMing;
+CREATE USER 'greatming'@'localhost'IDENTIFIED BY 'greatming';
+GRANT ALL ON GreatMing.* TO 'greatming'@'localhost' IDENTIFIED BY 'greatming';
 
 #### Users:
 ```
@@ -22,7 +25,7 @@ CREATE TABLE Users(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60) NOT NULL,
 ```
 #### products
 ```
-CREATE TABLE products (
+CREATE TABLE Products (
       id INT AUTO_INCREMENT PRIMARY KEY,
       classification VARCHAR(30) CHARACTER SET utf8mb4,
       name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL,
@@ -44,7 +47,7 @@ CREATE TABLE orders (
     quantity INT NOT NULL,
     sum DECIMAL(10, 2) NOT NULL,
     createTime datetime NOT NULL
-)
+);
 
 ```
 ### 安装redis
