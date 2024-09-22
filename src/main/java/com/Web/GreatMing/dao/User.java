@@ -3,7 +3,7 @@ package com.Web.GreatMing.dao;
 
 import lombok.Data;
 import java.time.LocalDateTime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

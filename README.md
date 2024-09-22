@@ -2,10 +2,11 @@
 ## 配置:
 ### 安装mariadb
 script:
+```
 CREATE DATABASE GreatMing;
 CREATE USER 'greatming'@'localhost'IDENTIFIED BY 'greatming';
 GRANT ALL ON GreatMing.* TO 'greatming'@'localhost' IDENTIFIED BY 'greatming';
-
+```
 #### Users:
 ```
 CREATE TABLE Users(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60) NOT NULL, passwd VARCHAR(60) NOT NULL, tag VARCHAR(60) DEFAULT "members", ranks VARCHAR(10), company VARCHAR(10), kills INT DEFAULT 0, attendance INT DEFAULT 0, balance DECIMAL(10, 2) DEFAULT 0.00, userpic VARCHAR(100), createtime datetime not null, updatetime datetime not null);
