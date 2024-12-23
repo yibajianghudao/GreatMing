@@ -14,6 +14,7 @@ public class LoginController {
     UserService userService;
 
 //    @CrossOrigin
+    
     @PostMapping("/login")
     public Response<?> login(@RequestParam(name = "name") String name, @RequestParam(name = "passwd") String passwd) {
         return Response.newSuccess(userService.login(name, passwd), "登录成功！");
