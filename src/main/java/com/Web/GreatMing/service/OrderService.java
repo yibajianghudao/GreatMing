@@ -74,7 +74,7 @@ public class OrderService {
         boolean status = userServiceimpl.addBalance(userid, order.getSum());
         if (status) {
             orderMapper.deleteById(id);
-            return usersMapper.findById(userid).getBalance();
+            return usersMapper.findUserById(userid).getBalance();
         } else {
             throw new MessageException("balance isn't be refund");
         }

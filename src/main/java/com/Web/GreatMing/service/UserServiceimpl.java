@@ -54,29 +54,29 @@ public class UserServiceimpl implements UserService {
     }
     @Override
     public UserDTO getUserById(long id) {
-        User user = userMapper.findById(id);
+        User user = userMapper.findUserById(id);
         return UserConverter.converterUser(user);
     }
     
     @Override
     public void deleteUserById(long id) {
-        User user = userMapper.findById(id);
+        User user = userMapper.findUserById(id);
         if(user == null) throw new NullPointerException();
-        userMapper.deleteById(id);
+        userMapper.deleteUserById(id);
 //        System.out.println("delete is be used.");
     }
 
     @Override
     @Transactional //操作失败后回滚
     public UserDTO updateUser(Long id, UserDTO userDTO) {
-        User user = userMapper.findById(id);
+        User user = userMapper.findUserById(id);
         // 将前端未传入的参数从user中取出并设置
         userDTO.setId(user.getId());
         userDTO.setPasswd(user.getPasswd());
         userDTO.setUserpic(user.getUserpic());
         User updatedUser = UserConverter.converterUserDTO(userDTO);
         userMapper.updateUser(updatedUser);
-        return UserConverter.converterUser(userMapper.findById(id));
+        return UserConverter.converterUser(userMapper.findUserById(id));
     }
     
     public String login(String name, String passwd) {
@@ -148,7 +148,7 @@ public class UserServiceimpl implements UserService {
     }
 
     public boolean reduceBalance(long id, double num){
-        double balance = userMapper.findById(id).getBalance();
+        double balance = userMapper.findUserById(id).getBalance();
         if(balance < num){
             return false;
         }else {
@@ -159,10 +159,10 @@ public class UserServiceimpl implements UserService {
     }
 
     public boolean addBalance(long id, double num){
-        double balance = userMapper.findById(id).getBalance();
+        double balance = userMapper.findUserById(id).getBalance();
         double newBalance = balance + num;
         userMapper.updateBalance(id, newBalance);
-        double findBalance = userMapper.findById(id).getBalance();
+        double findBalance = userMapper.findUserById(id).getBalance();
         return findBalance == newBalance;
     }
 

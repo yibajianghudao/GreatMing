@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class TeamMember {
 
-    @NotNull
+    // @NotNull
     private long id;
 
     @NotEmpty

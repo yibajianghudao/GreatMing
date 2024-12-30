@@ -17,14 +17,14 @@ public interface UsersMapper{
     User findByName(String name);
 
     @Select("select * from Users where id=#{id}")
-    User findById(long id);
+    User findUserById(long id);
 
     @Insert("insert into Users(name, passwd, tag, ranks, company, kills, attendance, balance, userpic, createtime, updatetime)" + 
     " values(#{name}, #{passwd}, #{tag}, #{ranks}, #{company}, #{kills}, #{attendance}, #{balance}, #{userpic}, now(), now())")
     void addNewUser(User user);
 
     @Delete("delete from Users where id=#{id}")
-    void deleteById(long id);
+    void deleteUserById(long id);
 
     @Update("update Users set name=#{name},passwd=#{passwd},tag=#{tag},ranks=#{ranks},company=#{company},kills=#{kills},attendance=#{attendance},balance=#{balance},userpic=#{userpic},updatetime=NOW() where id=#{id}")
     void updateUser(User userDTO);

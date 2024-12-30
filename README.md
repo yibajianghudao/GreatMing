@@ -77,3 +77,22 @@ and run:
 5. 排行榜系统     // 8月6日
 6. 头像系统      // 8月7日
 7. 后台管理系统   // 8月15日
+
+## API:
+### Login
+``` shell
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/login\?name\="username"\&passwd\="passwd"
+```
+### TeamMember
+#### Add
+``` shell
+curl -X POST -H "Content-Type: application/json" -H "Authorization: there is token" -d '{"name":"newplayer","qq":"12345678900","gender":"男","age":18,"pastteams":"GreatMing"}' http://localhost:8080/teammember/add
+```
+#### Get All
+``` shell
+curl -X GET -H "Content-Type: application/json" -H "Authorization: there is token" http://localhost:8080/teammember/all
+```
+#### Delete
+``` shell
+curl -X DELETE -H "Authorization: there is token" http://localhost:8080/teammember/delete/2
+```
