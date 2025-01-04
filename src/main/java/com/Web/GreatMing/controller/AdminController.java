@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Web.GreatMing.Response;
+import com.Web.GreatMing.dao.GameHandleLog;
 import com.Web.GreatMing.dao.GameLog;
 import com.Web.GreatMing.dao.GreatMingLog;
 import com.Web.GreatMing.exception.MessageException;
@@ -33,6 +34,17 @@ public class AdminController {
     public Response<?> uploadGameLog(@RequestBody GameLog gameLog) {
         try {
             String msg = adminService.uploadGameLog(gameLog);
+            return Response.newSuccess("add "+ msg + " GreatMingLog.");
+        } catch (MessageException e) {
+            return Response.newFail(e.getMessage());
+        }
+        
+    }
+
+    @PostMapping("/uploadHandleGameLog")
+    public Response<?> uploadHandleGameLog(@RequestBody GameHandleLog gameLog) {
+        try {
+            String msg = adminService.uploadHandleGameLog(gameLog);
             return Response.newSuccess("add "+ msg + " GreatMingLog.");
         } catch (MessageException e) {
             return Response.newFail(e.getMessage());

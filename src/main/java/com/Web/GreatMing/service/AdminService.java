@@ -7,16 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.Web.GreatMing.dao.GameHandleLog;
 import com.Web.GreatMing.dao.GameLog;
 import com.Web.GreatMing.dao.GreatMingLog;
 import com.Web.GreatMing.dao.GreatMingLogMapper;
 import com.Web.GreatMing.exception.MessageException;
 import com.Web.GreatMing.utils.ReadGameLog;
+import com.Web.GreatMing.utils.ReadHandleLog;
 
 @Service
 public class AdminService {
     @Autowired
     private ReadGameLog readGameLog;
+
+    @Autowired
+    private ReadHandleLog readHandleLog;
 
     @Autowired
     private GreatMingLogMapper greatMingLogMapper;
@@ -25,6 +30,20 @@ public class AdminService {
     public String uploadGameLog(GameLog gameLog) throws MessageException{
         try {
             List<GreatMingLog> list = readGameLog.ReadLog(gameLog);
+            int length = list.size();
+            for (GreatMingLog greatMingLog : list) {
+                greatMingLogMapper.addGreatMingLog(greatMingLog);
+            }
+            return length+"";
+        } catch (Exception e) {
+            throw new MessageException("add GreatMingLog fail.");
+        }
+    }
+
+    @Transactional
+    public String uploadHandleGameLog(GameHandleLog gameHandleLog) throws MessageException{
+        try {
+            List<GreatMingLog> list = readHandleLog.ReadLog(gameHandleLog);
             int length = list.size();
             for (GreatMingLog greatMingLog : list) {
                 greatMingLogMapper.addGreatMingLog(greatMingLog);
