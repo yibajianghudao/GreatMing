@@ -51,6 +51,16 @@ CREATE TABLE orders (
 );
 
 ```
+#### greatminglogs
+``` shell
+CREATE TABLE greatminglogs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date datetime NOT NULL,
+    name VARCHAR(60) NOT NULL,
+    kills INT NOT NULL
+);
+```
+
 
 #### TeamMembers
 ```
@@ -72,7 +82,7 @@ and run:
 ## 开发计划：
 1. ~~完成订单类和接口~~
 2. ~~完成用户购买和退款接口~~
-3. 新人填表页面  // 8月2日
+3. ~~新人填表页面  // 8月2日~~
 4. 军饷记录与溯源  // 8月5日
 5. 排行榜系统     // 8月6日
 6. 头像系统      // 8月7日
