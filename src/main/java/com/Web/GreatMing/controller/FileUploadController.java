@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.service.FileUploadServiceimpl;
-import com.Web.GreatMing.service.UserServiceimpl;
+import com.Web.GreatMing.service.UserService;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +27,7 @@ public class FileUploadController {
     FileUploadServiceimpl fileUploadService;
 
     @Autowired
-    UserServiceimpl userService;
+    UserService userService;
 
     @PostMapping("/upload")
     public Response<?> upload(MultipartFile file){

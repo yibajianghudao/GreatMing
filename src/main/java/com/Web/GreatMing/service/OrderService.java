@@ -15,7 +15,7 @@ public class OrderService {
     @Autowired
     private ProductsMapper productsMapper;
     @Autowired
-    private UserServiceimpl userServiceimpl;
+    private UserService userServiceimpl;
     @Autowired
     private UsersMapper usersMapper;
     @Autowired

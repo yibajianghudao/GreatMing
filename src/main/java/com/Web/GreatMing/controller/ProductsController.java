@@ -3,7 +3,7 @@ package com.Web.GreatMing.controller;
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.dao.Products;
 import com.Web.GreatMing.service.ProductsService;
-import com.Web.GreatMing.service.UserServiceimpl;
+import com.Web.GreatMing.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ public class ProductsController {
     @Autowired
     ProductsService productsService;
     @Autowired
-    private UserServiceimpl userServiceimpl;
+    private UserService userServiceimpl;
 
     @GetMapping("/getallproducts")
     public Response<?> getAllProducts() {

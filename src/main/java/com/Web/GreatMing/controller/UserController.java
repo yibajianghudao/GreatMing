@@ -7,7 +7,7 @@ import com.Web.GreatMing.converter.UserConverter;
 import com.Web.GreatMing.dao.PageBean;
 import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dto.UserDTO;
-import com.Web.GreatMing.service.UserServiceimpl;
+import com.Web.GreatMing.service.UserService;
 import com.Web.GreatMing.utils.JwtUtil;
 import com.Web.GreatMing.utils.Md5Util;
 import com.Web.GreatMing.utils.ThreadLocalUtil;
@@ -21,7 +21,6 @@ import java.util.Map;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 //@CrossOrigin(maxAge = 3600, methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS })
@@ -30,7 +29,7 @@ import org.springframework.validation.annotation.Validated;
 public class UserController {
 
     @Autowired
-    private UserServiceimpl userService;
+    private UserService userService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -49,23 +48,6 @@ public class UserController {
         }
     }
     
-    @GetMapping("/{id}")
-    public Response<?> getStudentById(@PathVariable long id, @RequestHeader(name = "Authorization") String token, HttpServletResponse response){
-        try {
-            Map<String, Object> claims = JwtUtil.parseToken(token);
-            
-        }catch (Exception e){
-            // 设置状态码response为401
-            response.setStatus(401);
-            return Response.newFail("令牌不合法，未登录。");
-        }
-        try {
-            return Response.newSuccess(userService.getUserById(id), "成功返回用户信息");
-        } catch (NullPointerException e) {
-            return Response.newFail("该Id用户不存在", e.toString());
-        }
-        
-    }
 
     @GetMapping("/userInfo")
     public Response<?> userInfo(/* @RequestHeader(name = "Authorization") String token */) {
@@ -96,11 +78,8 @@ public class UserController {
     public Response<?> updateUser(@RequestBody @Validated UserDTO userDTO) {
         // 前端需要传递显示全部的属性，未更新也要传递
         // 密码,头像等需要走单独的接口进行修改
-        Map<String, Object> map = ThreadLocalUtil.get();
-        Integer idiInteger =  (Integer) map.get("id");
-        Long id = idiInteger.longValue();
-        // 此API不应传输passwd参数
-        UserDTO newUserDTO = userService.updateUser(id, userDTO);
+        // 此API不应传输passwd,userpic参数
+        UserDTO newUserDTO = userService.updateUser(userDTO);
         return Response.newSuccess(newUserDTO, "用户信息更新成功！");
     }
 
@@ -164,12 +143,12 @@ public class UserController {
     }
 
     @GetMapping("/userpagelist")
-    public Response<PageBean<User>> userPageList(
-        Integer pageNum,
-        Integer pageSize,
+    public Response<PageBean<UserDTO>> userPageList(
+        @RequestParam Integer pageNum,
+        @RequestParam Integer pageSize,
         @RequestParam(required = false) String company
     ){
-        PageBean<User> pb = userService.userPageList(pageNum, pageSize, company);
+        PageBean<UserDTO> pb = userService.userPageList(pageNum, pageSize, company);
         return Response.newSuccess(pb, "返回数据列表成功.");
     }
     
