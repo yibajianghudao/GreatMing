@@ -17,7 +17,7 @@ public interface OrderMapper {
     void deleteById(long id);
 
     @Insert("insert into orders(productId,productName,username,price,quantity,sum,createTime) values (#{productId},#{productName},#{username},#{price},#{quantity},#{sum},now())")
-    int addOrder(Order order);
+    void addOrder(Order order);
 
     @Select("select * from orders where id=(select max(id) from orders where username=#{username})")
     Order findLastByUsername(String username);
