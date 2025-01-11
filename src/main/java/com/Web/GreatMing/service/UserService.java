@@ -128,6 +128,10 @@ public class UserService {
         return list;
     }
     public PageBean<UserDTO> userPageList(Integer pageNum, Integer pageSize, String company) {
+        
+        if (company.equals("")) {
+            company = null;
+        }
         // 创建PageBean对象
         PageBean<UserDTO> pb = new PageBean<>();
 
@@ -143,14 +147,12 @@ public class UserService {
             asDTO.add(UserConverter.converterUser(user));
         }
         
-        // 强制转换类型，因为Page中提供了方法获取PageHelper分页查询后得到的消息记录条数和当前页数据
-        // 因为多态不允许父类(List<user>)调用子类Page<User>中特有的方法
-        // Page<UserDTO> p = (Page<UserDTO>) asDTO;
+        Page<User> pageResult = (Page<User>) as; // 强制转换为Page类型
 
-        // 数据填充到PageBean对象中
-        pb.setTotal((long) asDTO.size());
-        pb.setItems(asDTO);
-        
+        // 设置分页信息到PageBean
+        pb.setTotal(pageResult.getTotal()); // 总记录数
+        pb.setPages(pageResult.getPages()); // 总页数
+        pb.setItems(asDTO); // 当前页数据
         // p.close();
         return pb;
     }

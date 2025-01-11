@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class PageBean <T> {
     private Long total;
     private List<T> items;
+    private int pages;
 
     
 }
