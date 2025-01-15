@@ -6,7 +6,6 @@ import com.Web.GreatMing.exception.MessageException;
 import com.Web.GreatMing.service.OrderService;
 import com.Web.GreatMing.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,8 +53,7 @@ public class OrderController {
             String name = (String) map.get("name");
             // 传入参数:productId,quantity
             // 没有检测剩余商品数量
-            Order order = orderService.buyOrder(name, productId, quantity);   // 通过添加前与添加后的该用户订单数量是否变化来判断是否成功
-            return Response.newSuccess(order, "buy order success");
+            return Response.newSuccess(orderService.buyOrder(name, productId, quantity));
         } catch (MessageException e){
             return Response.newFail(e.getMessage());
         }
@@ -65,8 +63,7 @@ public class OrderController {
     @DeleteMapping("/refund/{id}")
     public Response<?> refundOrder(@PathVariable long id) {
         try {
-            double newBalance = orderService.refundOrder(id);
-            return Response.newSuccess(newBalance, "refund order success");
+            return Response.newSuccess(orderService.refundOrder(id));
         } catch (MessageException e){
             return Response.newFail(e.getMessage());
         }

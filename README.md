@@ -63,12 +63,24 @@ CREATE TABLE greatminglogs (
 
 
 #### TeamMembers
-```
+``` shell
 CREATE TABLE TeamMembers(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(60) NOT NULL, qq VARCHAR(60) NOT NULL, gender VARCHAR(10), age INT, microphone VARCHAR(10), company VARCHAR(10), know VARCHAR(200), timelength VARCHAR(10), disposition VARCHAR(200), timeonline VARCHAR(200), favoritegames VARCHAR(200), pastteams VARCHAR(200), position VARCHAR(200), behavior VARCHAR(200) ,createtime datetime not null);
 ```
 插入数据:
 ```
 insert into TeamMembers(name, qq, gender, age, microphone, company, know, timelength, disposition, timeonline, favoritegames, pastteams, position, behavior, createtime) values("testname", "1234567890","男", 18, "有", "步兵营", "bilibili", "1000h", "叛逆", "周末上午12:00以后", "战地1", "XXX战队", "氛围组", "上报", now());
+```
+
+#### BalanceUpdates
+``` shell
+CREATE TABLE BalanceUpdates (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(60) NOT NULL,
+    isadd BIT NOT NULL,
+    balance DECIMAL(10, 2) NOT NULL, 
+    updatedbalance DECIMAL(10, 2) NOT NULL,
+    description TEXT NOT NULL,
+    updatetime DATETIME NOT NULL);  
 ```
 
 ### 安装redis

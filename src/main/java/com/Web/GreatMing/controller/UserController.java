@@ -4,9 +4,11 @@ import org.springframework.web.bind.annotation.*;
 
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.converter.UserConverter;
+import com.Web.GreatMing.dao.BalanceUpdate;
 import com.Web.GreatMing.dao.PageBean;
 import com.Web.GreatMing.dao.User;
 import com.Web.GreatMing.dto.UserDTO;
+import com.Web.GreatMing.service.BalanceUpdateService;
 import com.Web.GreatMing.service.UserService;
 import com.Web.GreatMing.utils.JwtUtil;
 import com.Web.GreatMing.utils.Md5Util;
@@ -23,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 //@CrossOrigin(maxAge = 3600, methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS })
 @RestController
 @RequestMapping("/user")
@@ -33,6 +38,9 @@ public class UserController {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private BalanceUpdateService balanceUpdateService;
 
     @PostMapping("/adduser")
     public Response<?> addNewUser(@RequestBody UserDTO userDTO) {
@@ -61,6 +69,19 @@ public class UserController {
 
         return Response.newSuccess(infoUserDTO, "查询用户信息成功.");
     }
+
+    @GetMapping("/userblanceupdatelog")
+    public Response<?> getuserbalnceupdatelog() {
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String name = (String) map.get("name");
+        List<BalanceUpdate> balanceUpdates = balanceUpdateService.getListBalanceUpdatesByName(name);
+        if (balanceUpdates.size() != 0) {
+            return Response.newSuccess(balanceUpdates, "get balanceupdatelog success.");
+        }else{
+            return Response.newFail("get balanceupdatelog failed.");
+        }
+    }
+    
     
 
     

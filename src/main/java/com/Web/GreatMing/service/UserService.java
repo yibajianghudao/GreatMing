@@ -157,23 +157,15 @@ public class UserService {
         return pb;
     }
 
-    public boolean reduceBalance(long id, double num){
-        double balance = userMapper.findUserById(id).getBalance();
-        if(balance < num){
-            return false;
-        }else {
-            double newBalance = balance - num;
-            userMapper.updateBalance(id, newBalance);
+    public boolean updateBalance(long id, double balance){
+        double currentBalance = userMapper.findUserById(id).getBalance();
+        userMapper.updateBalance(id, balance);
+        double updatedbalance = userMapper.findUserById(id).getBalance();
+        if (currentBalance != updatedbalance) {
             return true;
+        }else{
+            return false;
         }
-    }
 
-    public boolean addBalance(long id, double num){
-        double balance = userMapper.findUserById(id).getBalance();
-        double newBalance = balance + num;
-        userMapper.updateBalance(id, newBalance);
-        double findBalance = userMapper.findUserById(id).getBalance();
-        return findBalance == newBalance;
     }
-
 }
