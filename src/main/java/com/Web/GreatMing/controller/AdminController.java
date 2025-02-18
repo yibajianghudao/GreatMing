@@ -2,23 +2,23 @@ package com.Web.GreatMing.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.dao.GameHandleLog;
 import com.Web.GreatMing.dao.GameLog;
 import com.Web.GreatMing.dao.GreatMingLog;
+import com.Web.GreatMing.dao.MonthLog;
 import com.Web.GreatMing.exception.MessageException;
 import com.Web.GreatMing.service.AdminService;
-
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -76,6 +76,20 @@ public class AdminController {
         }
         
     }
+
+    @GetMapping("/countMouthLogs") 
+    public Response<?> CountMouthLogs(@RequestParam int year, @RequestParam int month) {
+        try {
+            Map<String, MonthLog> data = adminService.CountMouthLogs(year, month);
+            return Response.newSuccess(data, "count mouth logs success!");
+            
+        } catch (Exception e) {
+            return Response.newFail(e.getMessage());
+        }
+    }
+    
+
+
     
     
 

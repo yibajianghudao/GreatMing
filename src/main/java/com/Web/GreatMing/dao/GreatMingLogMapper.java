@@ -1,9 +1,12 @@
 package com.Web.GreatMing.dao;
 
-import org.apache.ibatis.annotations.*;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper()
 public interface GreatMingLogMapper {
@@ -24,7 +27,8 @@ public interface GreatMingLogMapper {
     @Select("select * from greatminglogs where date=#{date} and name=#{name}")
     List<GreatMingLog> findGreatMingLogsByDateName(LocalDate date, String name);
 
-
+    @Select("SELECT * FROM greatminglogs WHERE date >= #{startDate} AND date < #{endDate}")
+    List<GreatMingLog> findGreatMingLogsByDateRange(LocalDate startDate, LocalDate endDate);
 
     @Delete("delete from greatminglogs where id=#{id}")
     void deleteGreatMingLogsById(long id);
