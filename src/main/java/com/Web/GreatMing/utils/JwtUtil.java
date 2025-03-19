@@ -6,15 +6,18 @@ import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class JwtUtil {
 
-    private static final String KEY = "greatming";
+    @Value("${custom.jwt.encrypt.key}")
+    private static String KEY;
 	
 	//接收业务数据,生成token并返回
     public static String genToken(Map<String, Object> claims) {
         return JWT.create()
                 .withClaim("claims", claims)
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 ))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 4000 * 60 * 60 ))
                 .sign(Algorithm.HMAC256(KEY));
     }
 
