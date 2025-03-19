@@ -19,7 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class Logininterceptor implements HandlerInterceptor {
     
     @Autowired
-    StringRedisTemplate stringRedisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     // 请求接口前执行
     @Override
@@ -27,7 +30,7 @@ public class Logininterceptor implements HandlerInterceptor {
         // 令牌验证
         String token = request.getHeader("Authorization");
 //        System.out.println(token);
-        Map<String, Object> map = JwtUtil.parseToken(token);
+        Map<String, Object> map = jwtUtil.parseToken(token);
         Integer idiInteger =  (Integer) map.get("id");
         Long id = idiInteger.longValue();
         String keyString = id.toString();
@@ -47,7 +50,7 @@ public class Logininterceptor implements HandlerInterceptor {
                 throw new RuntimeException();
             }
 
-            Map<String, Object> claims = JwtUtil.parseToken(token);
+            Map<String, Object> claims = jwtUtil.parseToken(token);
             // 把数据存储到ThreadLocal,记录当前用户的token
             ThreadLocalUtil.set(claims);
 

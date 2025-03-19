@@ -31,7 +31,9 @@ import jakarta.validation.ConstraintViolationException;
 
 @Service
 public class UserService {
-    
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Autowired
     private UsersMapper userMapper;
 
@@ -91,7 +93,7 @@ public class UserService {
                     Map<String, Object> claims = new HashMap<>();
                     claims.put("id", id);
                     claims.put("name", loginuser.getName());
-                    String token = JwtUtil.genToken(claims);
+                    String token = jwtUtil.genToken(claims);
 
                     // 把token存储到redis中(id:token)
                     String keyString = id.toString();
