@@ -88,6 +88,18 @@ public class AdminController {
         }
     }
     
+    @PostMapping("/payBalance")
+    public Response<?> payBalance(@RequestBody Map<String, Map<String, MonthLog>> Requests) {
+        try {
+            Map<String, MonthLog> MonthLogs = Requests.get("monthlogs");
+            String data = adminService.PayBalance(MonthLogs);
+            return Response.newSuccess(data, "count mouth logs success!");
+            
+        } catch (Exception e) {
+            return Response.newFail(e.getMessage());
+        }
+    }
+    
 
 
     

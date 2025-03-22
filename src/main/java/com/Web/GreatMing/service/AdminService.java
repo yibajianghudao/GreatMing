@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.Web.GreatMing.dao.BalanceUpdate;
 import com.Web.GreatMing.dao.GameHandleLog;
 import com.Web.GreatMing.dao.GameLog;
 import com.Web.GreatMing.dao.GreatMingLog;
@@ -35,6 +36,9 @@ public class AdminService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BalanceUpdateService balanceUpdateService;
 
     @Transactional
     public String uploadGameLog(GameLog gameLog) throws MessageException {
@@ -179,6 +183,35 @@ public class AdminService {
         }
         monthLog.setBalance(balannce);
         return monthLog;
+    }
+
+    @Transactional
+    public String PayBalance(Map<String, MonthLog> mounthLogs) {
+        String err = "";
+        for (String name : mounthLogs.keySet()) {
+            MonthLog monthLog = mounthLogs.get(name);
+            // System.out.println(name + ": " + mounthLogs.get(name));
+            if (monthLog.getBalance() != 0.0) {
+                try {
+                    BalanceUpdate balanceUpdate = new BalanceUpdate();
+                    balanceUpdate.setName(monthLog.getName());
+                    balanceUpdate.setBalance(monthLog.getBalance());
+                    balanceUpdate.setDescription(monthLog.getDescription());
+                    balanceUpdate.setIsadd(true);
+                    balanceUpdateService.addBalanceUpdate(balanceUpdate);
+                } catch (MessageException e) {
+                    String username = mounthLogs.get(name).getName();
+                    err += username +e.getMessage() + "\n";
+                }
+            } else {
+                continue;
+            }
+            
+        }
+        if (!err.equals("")) {
+            throw new MessageException(err);
+        }
+        return "all balance is update success!";
     }
 
 }
