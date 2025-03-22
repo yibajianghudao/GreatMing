@@ -48,7 +48,7 @@ public class UserService {
     
     @Cacheable(cacheNames = "User", key = "#username")
     public User findByName(String username){
-        System.out.println("Use SQL.");
+        // System.out.println("Use SQL.");
         User user = userMapper.findByName(username);
         return user;
     }
