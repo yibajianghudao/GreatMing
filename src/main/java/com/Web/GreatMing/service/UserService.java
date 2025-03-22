@@ -3,6 +3,7 @@ package com.Web.GreatMing.service;
 import java.lang.NullPointerException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ import com.Web.GreatMing.exception.PasswordWrongException;
 import com.Web.GreatMing.utils.JwtUtil;
 import com.Web.GreatMing.utils.Md5Util;
 import com.Web.GreatMing.utils.ThreadLocalUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
@@ -39,8 +44,11 @@ public class UserService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
     
+    @Cacheable(cacheNames = "User", key = "#username")
     public User findByName(String username){
+        System.out.println("Use SQL.");
         User user = userMapper.findByName(username);
         return user;
     }
@@ -57,6 +65,7 @@ public class UserService {
         }
         
     }
+
     public UserDTO getUserById(long id) {
         User user = userMapper.findUserById(id);
         return UserConverter.converterUser(user);

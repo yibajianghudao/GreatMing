@@ -2,7 +2,10 @@ package com.Web.GreatMing.service;
 
 import com.Web.GreatMing.dao.Products;
 import com.Web.GreatMing.dao.ProductsMapper;
+import com.Web.GreatMing.dao.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

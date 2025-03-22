@@ -2,6 +2,8 @@ package com.Web.GreatMing.dao;
 
 
 import lombok.Data;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -11,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 
 // 数据库表映射类
 @Data
-public class User {
+public class User implements Serializable{
     @NotNull
     private long id;
 
