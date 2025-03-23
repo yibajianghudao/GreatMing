@@ -12,4 +12,7 @@
             </if>
         </where>
     </select>
+    <select id="findByName" resultType="com.Web.GreatMing.dao.User">
+        SELECT * FROM Users WHERE name=#{name};
+    </select>
 </mapper>
