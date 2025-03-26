@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.web</groupId>
 	<artifactId>GreatMing</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<name>GreatMingWeb</name>
 	<description>GreatMing Web for Spring Boot</description>
 	<properties>
@@ -88,6 +88,27 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.12.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>3.17.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<!-- no more than 2.3.3-->
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.3</version>
 		</dependency>
 
 

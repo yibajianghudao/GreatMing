@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.Web.GreatMing.Response;
 import com.Web.GreatMing.service.FileUploadServiceimpl;
 import com.Web.GreatMing.service.UserService;
+import com.Web.GreatMing.utils.AliOSSUtil;
+import com.aliyuncs.exceptions.ClientException;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -24,10 +27,13 @@ public class FileUploadController {
     
     
     @Autowired
-    FileUploadServiceimpl fileUploadService;
+    private FileUploadServiceimpl fileUploadService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Value("${OSS.TYPE}")
+    private String ossType;
 
     @PostMapping("/upload")
     public Response<?> upload(MultipartFile file){
@@ -39,11 +45,20 @@ public class FileUploadController {
         String filename = UUID.randomUUID().toString().replace("-", "") + originalFilename.substring(originalFilename.lastIndexOf("."));
         // file.transferTo(new File("/home/HanXiao/Code/Java/GreatMing/files/" + filename));
         try {
-            String result = fileUploadService.fileUpload(filename, file);
-            userService.updateAvatar(result);
+            String result = "";
+            System.out.println(ossType);
+            if (ossType.equals("alioss")) {
+                System.out.println("use alioss");
+                result = AliOSSUtil.uploadFile(filename, file.getInputStream());
+            }else{
+                result = fileUploadService.fileUpload(filename, file);
+                userService.updateAvatar(result);
+            }
             return Response.newSuccess(result, "返回访问地址成功！");
         } catch (MinioException | IOException | NoSuchAlgorithmException | InvalidKeyException e) {
             return Response.newFail(e.getMessage());
+        } catch (ClientException e){
+            return Response.newFail("init ali oss client failed. check configruation.");
         }
         
     }
