@@ -1,10 +1,12 @@
 package com.Web.GreatMing.dao;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+@TableName("`TeamMembers`")
 @Data
 public class TeamMember {
 

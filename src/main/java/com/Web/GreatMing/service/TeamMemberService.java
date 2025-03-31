@@ -2,6 +2,7 @@ package com.Web.GreatMing.service;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +17,19 @@ public class TeamMemberService {
     private TeamMemberMapper teamMemberMapper;
 
     public List<TeamMember> getAllTeamMember() {
-        return teamMemberMapper.findAllTeamMember();
+        return teamMemberMapper.selectList(null);
     }
 
     public TeamMember getTeamMemberById(long id){
-        return teamMemberMapper.findTeamMemberById(id);
+        return teamMemberMapper.selectById(id);
     }
 
     public String addTeamMember(TeamMember teamMember) throws MessageException{
-        if ((teamMemberMapper.findTeamMemberByName(teamMember.getName()) != null)) {
+        if ((teamMemberMapper.selectOne(new QueryWrapper<TeamMember>().eq("name", teamMember.getName())) != null)) {
             throw new MessageException("this name is be used.");
         }
-        teamMemberMapper.addNewTeamMember(teamMember);
-        TeamMember newtTeamMember = teamMemberMapper.findTeamMemberByName(teamMember.getName());
+        teamMemberMapper.insert(teamMember);
+        TeamMember newtTeamMember = teamMemberMapper.selectOne(new QueryWrapper<TeamMember>().eq("name", teamMember.getName()));
         if (newtTeamMember == null) {
             throw new MessageException("add teamMember failed.");
         } else {
@@ -38,8 +39,8 @@ public class TeamMemberService {
     }
 
     public String deleteTeamMember(long id) throws MessageException {
-        teamMemberMapper.deleteTeamMemberById(id);
-        if (teamMemberMapper.findTeamMemberById(id) != null) {
+        teamMemberMapper.deleteById(id);
+        if (teamMemberMapper.selectById(id) != null) {
             throw new MessageException("delete teamMember failed.");
         }else{
             return "delete teamMember success.";
