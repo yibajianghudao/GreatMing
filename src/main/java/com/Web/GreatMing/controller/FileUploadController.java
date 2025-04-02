@@ -32,7 +32,7 @@ public class FileUploadController {
     @Autowired
     private UserService userService;
 
-    @Value("${OSS.TYPE}")
+    @Value("${oss.type}")
     private String ossType;
 
     @PostMapping("/upload")

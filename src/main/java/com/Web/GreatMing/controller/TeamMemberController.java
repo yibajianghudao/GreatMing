@@ -42,7 +42,7 @@ public class TeamMemberController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Response<?> deleteTeamMember(@PathVariable long id){
+    public Response<?> deleteTeamMember(@PathVariable Long id){
         try {
             String msg = teamMemberService.deleteTeamMember(id);
             return Response.newSuccess(msg);

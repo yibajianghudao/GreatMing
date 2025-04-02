@@ -37,27 +37,27 @@ public class AliOSSUtil {
     private static String endpoint;
     private static String region;
 
-    @Value("${OSS.ACCESS.KEY.ID}")
+    @Value("${oss.access.key.id}")
     public void setAccessKeyID(String id) {
         accessKeyID = id;
     }
 
-    @Value("${OSS.ACCESS.KEY.SECRET}")
+    @Value("${oss.access.key.secret}")
     public void setAccessKeySecret(String secret) {
         accessKeySecret = secret;
     }
 
-    @Value("${OSS.ACCESS.KEY.BUCKETNAME}")
+    @Value("${oss.access.key.bucketname}")
     public void setBucketName(String name) {
         bucketName = name;
     }
 
-    @Value("${OSS.ACCESS.KEY.ENDPOINT}")
+    @Value("${oss.access.endpoint}")
     public void setEndpoint(String ep) {
         endpoint = ep;
     }
 
-    @Value("${OSS.ACCESS.KEY.REGION}")
+    @Value("${oss.access.region}")
     public void setRegion(String reg) {
         region = reg;
     }

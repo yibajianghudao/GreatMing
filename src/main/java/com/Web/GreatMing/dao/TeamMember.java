@@ -1,5 +1,8 @@
 package com.Web.GreatMing.dao;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +14,10 @@ import java.time.LocalDateTime;
 public class TeamMember {
 
     // @NotNull
-    private long id;
+    // 使用ASSIGN_ID需要确保id类型为Long,Integer,String
+    // 使用ASSIGN_UUID需要确保id类型为String，数据库id为varchar(256)等
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     @NotEmpty
     private String name;
@@ -53,6 +59,7 @@ public class TeamMember {
     // 遇到辱骂等行为时的行为
     private String behavior;
 
+//    @TableField(value = "createtime")
     private LocalDateTime createtime;
 
 }

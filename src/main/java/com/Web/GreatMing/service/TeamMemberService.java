@@ -20,7 +20,7 @@ public class TeamMemberService {
         return teamMemberMapper.selectList(null);
     }
 
-    public TeamMember getTeamMemberById(long id){
+    public TeamMember getTeamMemberById(Long id){
         return teamMemberMapper.selectById(id);
     }
 
@@ -38,7 +38,7 @@ public class TeamMemberService {
         
     }
 
-    public String deleteTeamMember(long id) throws MessageException {
+    public String deleteTeamMember(Long id) throws MessageException {
         teamMemberMapper.deleteById(id);
         if (teamMemberMapper.selectById(id) != null) {
             throw new MessageException("delete teamMember failed.");
