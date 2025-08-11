@@ -14,7 +14,7 @@ spring:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
     show-sql: true
   datasource:
-    url: jdbc:p6spy:mariadb://localhost:3306/GreatMing?characterEncoding=utf-8
+    url: jdbc:p6spy:mariadb://mariadb:3306/GreatMing?characterEncoding=utf-8
     # set database username at here
     username: greatming
     # set password at here
@@ -44,7 +44,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: redis
       port: 6379
 
   cache:
@@ -56,6 +56,12 @@ spring:
 
 server:
   port: 8080
+
+logging:
+  level:
+    root: info
+  file:
+    path: logs
 
 # minio
 minio:

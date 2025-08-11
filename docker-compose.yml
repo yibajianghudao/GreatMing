@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    image: greatmingweb:${WEB_VERSION}
+    ports:
+      - "8080:8080"
+  redis:
+    image: "redis:8.0-rc1-alpine"
+  mariadb:
+    image: "mariadb:11.7.2"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
